@@ -32,7 +32,7 @@ export class FileProcessingCdkStack extends cdk.Stack {
       handler: 'processor.handler',
 
       code: lambda.Code.fromAsset(
-        path.join(__dirname, '../lambda')
+        path.join(__dirname, '../dist/lambda')
       ),
 
       memorySize: 128,
