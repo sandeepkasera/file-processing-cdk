@@ -24,15 +24,18 @@
     "typeRoots": [
       "./node_modules/@types"
     ],
-    "noEmit": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "noEmit": false,
     "isolatedModules": true,
     "types": [
       "jest",
-      "node"
-    ]
+       "node"
+      ]
   },
   "exclude": [
     "node_modules",
-    "cdk.out"
+    "cdk.out",
+    "dist"
   ]
 }

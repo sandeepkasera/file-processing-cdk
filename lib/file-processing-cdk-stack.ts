@@ -1,4 +1,4 @@
-import * as cdk from 'aws-cdk-lib/core';
+import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -25,4 +25,19 @@ export class FileProcessingCdkStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'FilesBucketName', {
       value: filesBucket.bucketName,
     });
+
+    const processorFunction = new lambda.Function(this, 'FileProcessor', {
+      runtime: lambda.Runtime.NODEJS_22_X,
+
+      handler: 'processor.handler',
+
+      code: lambda.Code.fromAsset(
+        path.join(__dirname, '../lambda')
+      ),
+
+      memorySize: 128,
+
+      timeout: cdk.Duration.seconds(10),
+    });
+  }
 }
