@@ -4,6 +4,7 @@ import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as path from 'path';
+import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
 
 export class FileProcessingCdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -39,5 +40,14 @@ export class FileProcessingCdkStack extends cdk.Stack {
 
       timeout: cdk.Duration.seconds(10),
     });
+
+    // Allow Lambda to read files from our S3 bucket
+    filesBucket.grantRead(processorFunction);
+
+    // Trigger Lambda whenever a new object is uploaded
+    filesBucket.addEventNotification(
+      s3.EventType.OBJECT_CREATED,
+      new s3n.LambdaDestination(processorFunction)
+    );
   }
 }
